@@ -1,5 +1,7 @@
-const express = require('express');
-const logger  = require('morgan');
+const express  = require('express');
+const mongoose = require('mongoose'); 
+const logger   = require('morgan');
+const cors     = require('cors')
 
 class App {
 
@@ -9,6 +11,9 @@ class App {
         // 미들웨어 셋팅
         this.setMiddleWare();
 
+        // db 연결성공
+        this.setDB();
+
         // 정적 디렉토리 추가
         this.setStatic();
 
@@ -16,7 +21,7 @@ class App {
         this.setLocals();
 
         // 라우팅
-        this.getRouting();
+        this.setRouter();
 
         // 404 ㅔ=페이지를 찾을수가 없음
         this.status404();
@@ -26,11 +31,26 @@ class App {
 
     }
 
+    setDB() {
+        mongoose.connect('mongodb://15.164.211.216/admin', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: true,
+            useCreateIndex: true,
+            ignoreUndefined: true,
+            user: "test",
+            pass: "test"
+        })
+        .then(() => console.log("db connected"))
+        .catch(err => console.log(err));        
+    }
+
     setMiddleWare () {
         // 미들웨어 셋팅
+        this.app.use(cors())
         this.app.use(logger('dev'));
         this.app.use(express.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(express.urlencoded({ extended: false }));
     }
 
     setStatic() {
@@ -40,8 +60,7 @@ class App {
     setLocals() {
     }
 
-    getRouting() {
-        this.app.use(require('./routers'))
+    setRouter() {
     }
 
     status404() {
@@ -56,3 +75,5 @@ class App {
         })
     }
 }
+
+module.exports = new App().app

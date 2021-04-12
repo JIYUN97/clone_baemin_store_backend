@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const logger = require("morgan");
 const router = require("./controllers");
+const logger = require("morgan");
 require("dotenv").config();
 
 class App {
@@ -15,14 +15,14 @@ class App {
   }
   setDB() {
     mongoose
-      .connect("mongodb://localhost:27017/admin", {
+      .connect("mongodb://15.164.211.216:27017/admin", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
         ignoreUndefined: true,
         useFindAndModify: false,
-        user: process.env.USER,
-        pass: process.env.PASSWORD,
+        user: process.env.DB_USER,
+        pass: process.env.DB_PASSWORD,
       })
       .then(() => console.log("db connected"))
       .catch((err) => console.log(err));
@@ -50,4 +50,4 @@ class App {
   }
 }
 
-module.exports = App;
+module.exports = new App().app;

@@ -12,15 +12,8 @@ const GoodsSchema = new Schema({
   discount: { type: Boolean },
   option: { type: [String] },
   sold_out: { type: Boolean },
+  comment_count: { type: Number, default: 0 },
 });
 
 const Goods = model("goods", GoodsSchema);
 module.exports = Goods;
-
-
-
-
-
-
-
-

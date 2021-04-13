@@ -16,3 +16,7 @@ const GoodsSchema = new Schema({
 
 const Goods = model("goods", GoodsSchema);
 module.exports = Goods;
+
+
+
+

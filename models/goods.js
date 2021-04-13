@@ -11,6 +11,7 @@ const GoodsSchema = new Schema({
   detail_image_url: { type: [String] },
   discount: { type: Boolean },
   option: { type: [String] },
+  sold_out: { type: Boolean },
 });
 
 const Goods = model("goods", GoodsSchema);

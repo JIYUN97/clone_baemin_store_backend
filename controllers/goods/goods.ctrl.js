@@ -14,16 +14,16 @@ client.on('connect', (err, res) => {
     console.log(`접속 성공`)
 })
 
-exports.get_page = async(req, res) => {
+// 메인 페이지
+exports.get_main_page = async(req, res) => {
   try {
-    const redisKey = "main"
+    const redisKey = "goods"
     client.get(redisKey, async(err, re) => {
       if (re) {
         res.status(200).send({result : JSON.parse(re)})
       }else{
         re = await Goods.find({}).exec()
-        
-        client.setex(redisKey, JSON.stringify(re))
+        client.setex(redisKey, 60*60, JSON.stringify(re))
         res.status(200).send({result : re})
       }
     })
@@ -33,29 +33,25 @@ exports.get_page = async(req, res) => {
   }
 };
 
-
-// 메인 페이지
-exports.get_main_page = async (req, res) => {
-  try {
-    goods = await Goods.find({});
-    res.status(200).send({ result: { goods } });
-  } catch (err) {
-    res.status(400).send({ err: err.message });
-  }
-};
-
 // 카테고리 페이지
 exports.get_category_page = async (req, res) => {
   try {
-    categoryId = req.params.cateogoryId;
-    category = await Category.find({
+    categoryId = req.params.categoryId
+    category   = await Category.find({
       _id: categoryId,
-    });
-
-    category_goods = await Goods.find({ category: category.name });
-
-    res.status(200).send({ result: { category_goods } });
+    }).exec();
+    const redisKey = "goods"
+    client.get(redisKey, async(err, re) => {
+      if (re) {
+        res.status(200).send({result : JSON.parse(re)})
+      }else{
+        re = await Goods.find({ category: category.name }).exec();
+        client.setex(redisKey, 60*60, JSON.stringify(re))
+        res.status(200).send({result : re})
+      }
+    })
   } catch (err) {
+    console.log(err)
     res.status(400).send({ err: err.message });
   }
 };
@@ -64,9 +60,18 @@ exports.get_category_page = async (req, res) => {
 exports.get_detail_page = async (req, res) => {
   try {
     goodsId = req.params.goodsId;
-    goods = await Goods.find({ _id: goodsId });
-    res.status(200).send({ result: { goods } });
+    const redisKey = "main"
+    client.get(redisKey, async(err, re) => {
+      if (re) {
+        res.status(200).send({result : JSON.parse(re)})
+      }else{
+        re = await Goods.find({ _id: goodsId }).exec();
+        client.setex(redisKey, 60*60, JSON.stringify(re))
+        res.status(200).send({result : re})
+      }
+    })
   } catch (err) {
+    console.log(err)
     res.status(400).send({ err: err.message });
   }
 };
@@ -80,6 +85,26 @@ exports.search = async (req, res) => {
     res.status(200).send({ result: { goods } });
   } catch (err) {
     console.log(err);
+    res.status(400).send({ err: err.message });
+  }
+};
+
+exports.get_page = async(req, res) => {
+  try {
+    const keyword = req.query.keyword;
+    console.log(keyword)
+    const redisKey = "main"
+    client.get(redisKey, async(err, re) => {
+      if (re) {
+        res.status(200).send({result : JSON.parse(re)})
+      }else{
+        re = await Goods.find({ title: { $regex: keyword } });
+        client.setex(redisKey, 60*60, JSON.stringify(re))
+        res.status(200).send({result : re})
+      }
+    })
+  } catch (err) {
+    console.log(err)
     res.status(400).send({ err: err.message });
   }
 };

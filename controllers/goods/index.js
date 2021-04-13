@@ -3,7 +3,7 @@ const router = Router();
 const ctrl = require("./goods.ctrl");
 
 // redis 연습
-router.get("/main", ctrl.get_page);
+router.get("/search", ctrl.get_page);
 
 //메인 페이지
 router.get("/", ctrl.get_main_page);

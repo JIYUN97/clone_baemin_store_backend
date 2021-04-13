@@ -13,9 +13,9 @@ module.exports = (req, res, next) => {
   }
   try {
     const { userId } = jwt.verify(authToken, process.env.JWT_TOKEN);
-    User.findOne({ id: userId })
+    User.findOne({ _id: userId })
       .then((user) => {
-        res.locals.user = user.id;
+        res.locals.user = userId;
         next();
       })
       .catch((err) => {

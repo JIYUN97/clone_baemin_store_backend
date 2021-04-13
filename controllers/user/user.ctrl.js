@@ -1,3 +1,7 @@
+const { User } = require("../../models");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 /****회원가입****/
 exports.register = async (req, res, next) => {
   const { id } = req.body;

@@ -1,4 +1,4 @@
-const { Goods, Category, User, Order } = require("../../models");
+const { Goods, Category, Comment, Order } = require("../../models");
 
 // 메인 페이지
 exports.get_main_page = async (req, res) => {

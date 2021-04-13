@@ -10,16 +10,24 @@ exports.get_main_page = async(req, res) => {
 }
 
 // 카테고리 페이지
-exports.get_category_page = async(req, res) => {
-    console.log(req.params.cateogoryId)
-    category_goods = await Goods.find({
-        category
-    })
-}
+// exports.get_category_page = async(req, res) => {
+//     categoryId = req.params.cateogoryId
+
+    
+
+//     category_goods = await Goods.find({
+//         categoryId : categoryId
+//     })
+// }
 
 // 상세 페이지
 exports.get_detail_page = async(req, res) => {
-    res.send("상세페이지 연결 성공")
+    goodsId = req.params.goodsId
+    goods   = await Goods.find({ "_id" : goodsId})
+    res.status(200).send({
+        "result" : "success",
+        "goods"  : goods
+    })
 }
 
 // 검색 

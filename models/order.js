@@ -4,6 +4,7 @@ const OrderSchema = new Schema(
   {
     user: { type: Types.ObjectId, required: true, ref: "User" },
     goods: { type: Types.ObjectId, required: true, ref: "Goods" },
+    quantity: { type: Number },
     address_one: { type: String },
     address_two: { type: String },
     delivery_comment: { type: String },

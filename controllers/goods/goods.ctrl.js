@@ -86,6 +86,18 @@ exports.postComment = async (req, res) => {
     return res.send({ result: "success" });
   } catch (err) {
     console.log(err);
-    return res.status(400);
+    return res.status(400).send({ err: err.message });
+  }
+};
+
+//코멘트(상품후기) 가져오기
+exports.getComment = async (req, res) => {
+  const { goodsId } = req.params;
+  try {
+    const comments = await Comment.find({ goods: goodsId });
+    return res.send({ result: comments });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ err: err.message });
   }
 };

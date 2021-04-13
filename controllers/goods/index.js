@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const ctrl = require("./goods.ctrl");
-const vali;
 
 //메인 페이지
 router.get("/", ctrl.get_main_page);

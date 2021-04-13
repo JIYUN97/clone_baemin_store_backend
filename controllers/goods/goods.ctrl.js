@@ -20,7 +20,7 @@ exports.get_category_page = async (req, res) => {
 
     category_goods = await Goods.find({ category: category.name });
 
-    res.status(200).send({ result: { goods } });
+    res.status(200).send({ result: { category_goods } });
   } catch (err) {
     res.status(400).send({ err: err.message });
   }

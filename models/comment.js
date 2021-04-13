@@ -4,6 +4,7 @@ const CommentSchema = Schema(
   {
     user: { type: Types.ObjectId, required: true, ref: "User" },
     goods: { type: Types.ObjectId, required: true, ref: "Goods" },
+    title: { type: String, required: true },
     content: { type: String, required: true },
     star_rating: { type: Number, required: true },
   },

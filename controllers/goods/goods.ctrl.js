@@ -1,4 +1,38 @@
 const { Goods, Category } = require("../../models");
+const fetch   = require('node-fetch')
+const redis   = require('redis')
+
+const client  = redis.createClient()
+
+// redis 연습
+client.on('error', (err) => {
+    console.log(`Error : ${err}`)
+    
+})
+
+client.on('connect', (err, res) => {
+    console.log(`접속 성공`)
+})
+
+exports.get_page = async(req, res) => {
+  try {
+    const redisKey = "main"
+    client.get(redisKey, async(err, re) => {
+      if (re) {
+        res.status(200).send({result : JSON.parse(re)})
+      }else{
+        re = await Goods.find({}).exec()
+        
+        client.setex(redisKey, JSON.stringify(re))
+        res.status(200).send({result : re})
+      }
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).send({ err: err.message });
+  }
+};
+
 
 // 메인 페이지
 exports.get_main_page = async (req, res) => {

@@ -4,12 +4,9 @@ const { Goods, Category } = require('../../models')
 exports.get_main_page = async(req, res) => {
     try{
         goods = await Goods.find({})
-        res.status(200).send({
-            "result" : "success",
-            "goods"  : goods
-        })
+        res.status(200).send({ result: { goods } })
     }catch(err) {
-        res.status(400).send({"result" : "fail"})
+        res.status(400).send({err : err.message})
     }
 }
 
@@ -23,12 +20,10 @@ exports.get_category_page = async(req, res) => {
         
         category_goods = await Goods.find({category : category.name})
 
-        res.status(200).send({
-            "result" : "success",
-            "goods"  : category_goods
-        })
+        res.status(200).send({ result: { goods } })
+
     }catch(err) {
-        res.status(400).send({"result" : "fail"})
+        res.status(400).send({err : err.message})
     }
 }
 
@@ -37,13 +32,9 @@ exports.get_detail_page = async(req, res) => {
     try {
         goodsId = req.params.goodsId
         goods   = await Goods.find({ "_id" : goodsId})
-        res.status(200).send({
-            "result" : "success",
-            "goods"  : goods
-        })
+        res.status(200).send({ result: { goods } })
     }catch(err) {
-        
-        res.status(400).send({"result" : "fail"})
+        res.status(400).send({err : err.message})
     }
 }
 
@@ -53,12 +44,9 @@ exports.search = async(req, res) => {
         const keyword = req.query.keyword
         const goods   = await Goods.find({ title : {'$regex' : keyword}})
         
-        res.status(200).send({
-            "result" : "success",
-            "goods"  : goods 
-        })
+        res.status(200).send({ result: { goods } })
     }catch(err) {
         console.log(err)
-        res.status(400).send({"result" : "fail"})
+        res.status(400).send({err : err.message})
     }
 }

@@ -7,7 +7,9 @@ exports.order = async(req, res)=>{
 
     order = await Order.findOne({ user : user, goods : goods})
     if (order) {
-        await Order.updateOne({user:user, goods, goods}, {$set : {quantity : this.order.quantity + quantity}})
+        await Order.updateOne({user:user, goods, goods}, {$set : {quantity : order.quantity + quantity}})
+        res.status(200).send({ result : "success" })
+        return 
     }
 
     if(phone_number.includes("-")) {

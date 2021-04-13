@@ -8,7 +8,7 @@ exports.register = async (req, res, next) => {
   try {
     //해당 id user 존재 체크
     const user = await User.findOne({ id });
-    if (user) return res.status(400).send({ err: "이미 존재하는 id 입니다." });
+    if (user) return res.status(401).send({ err: "이미 존재하는 id 입니다." });
     //user 생성
     const newUser = new User({ ...req.body });
     await newUser.save();
@@ -26,7 +26,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne().and([{ id }, { password }]);
     if (!user)
       return res
-        .status(400)
+        .status(401)
         .send({ err: "아이디 또는 패스워드가 일치하지 않습니다." });
     const token = jwt.sign({ useId: user.id }, process.env.JWT_TOKEN);
     return res.send({ result: { user: { token: token } } });
@@ -47,7 +47,7 @@ exports.findUserById = async (req, res, next) => {
     ]);
 
     if (!userByEmail && !userByPhone)
-      return res.status(400).send({ err: "회원정보를 찾을 수 없습니다." });
+      return res.status(401).send({ err: "회원정보를 찾을 수 없습니다." });
     if (userByEmail)
       return res.send({ result: { user: { id: userByEmail.id } } });
     if (userByPhone)

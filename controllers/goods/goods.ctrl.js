@@ -1,5 +1,4 @@
 const { Goods, Category } = require('../../models')
-const escapeStringRegexp  = require('escape-string-regexp');
 
 // 메인 페이지
 exports.get_main_page = async(req, res) => {
@@ -52,7 +51,7 @@ exports.get_detail_page = async(req, res) => {
 exports.search = async(req, res) => {
     try {
         const keyword = req.query.keyword
-        const goods  = await Goods.find({ title : {'$regex' : keyword}})
+        const goods   = await Goods.find({ title : {'$regex' : keyword}})
         
         res.status(200).send({
             "result" : "success",
@@ -63,5 +62,3 @@ exports.search = async(req, res) => {
         res.status(400).send({"result" : "fail"})
     }
 }
-
-

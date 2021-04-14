@@ -7,7 +7,7 @@ exports.order = async(req, res)=>{
 
     order = await Order.findOne({ user : res.locals.user, goods : goods})
     if (order) {
-        await Order.updateOne({user:res.locals.user, goods, goods}, {$set : {quantity : order.quantity + quantity}})
+        await Order.updateOne({user:res.locals.user, goods}, {$set : {quantity : order.quantity + quantity}})
         res.status(200).send({ result : "success" })
         return 
     }

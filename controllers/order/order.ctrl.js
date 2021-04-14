@@ -2,12 +2,12 @@ const { Goods, Order} = require("../../models");
 
 // 주문
 exports.order = async(req, res)=>{
-    const { user, goods, quantity, address_one, address_two,delivery_comment,payment_method} = req.body;
+    const { goods, quantity, address_one, address_two,zipcode,delivery_comment,payment_method} = req.body;
     let { phone_number } = req.body
 
-    order = await Order.findOne({ user : user, goods : goods})
+    order = await Order.findOne({ user : res.locals.user, goods : goods})
     if (order) {
-        await Order.updateOne({user:user, goods, goods}, {$set : {quantity : order.quantity + quantity}})
+        await Order.updateOne({user:res.locals.user, goods, goods}, {$set : {quantity : order.quantity + quantity}})
         res.status(200).send({ result : "success" })
         return 
     }
@@ -18,11 +18,12 @@ exports.order = async(req, res)=>{
     }
 
     await Order.create({
-        user             : user,
+        user             : res.locals.user,
         goods            : goods,
         quantity         : quantity,
         address_one      : address_one,
         address_two      : address_two,
+        zipcode          : zipcode, 
         delivery_comment : delivery_comment,
         phone_number     : phone_number,
         payment_method   : payment_method

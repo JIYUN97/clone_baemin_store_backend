@@ -7,7 +7,7 @@ const validation = require("../../middlewares/validation");
 router.get("/", ctrl.get_main_page);
 
 // 카테고리 페이지
-router.get("/category/:cateogoryId", ctrl.get_category_page);
+router.get("/category/:categoryId", ctrl.get_category_page);
 
 // 검색 기능
 router.get("/goods_search", ctrl.search);

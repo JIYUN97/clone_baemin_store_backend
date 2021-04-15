@@ -17,7 +17,7 @@ client.on('connect', (err, res) => {
 // 메인 페이지
 exports.get_main_page = async(req, res) => {
   try {
-    const redisKey = "goods"
+    const redisKey = "main"
     client.get(redisKey, async(err, re) => {
       if (re) {
         res.status(200).send({result : JSON.parse(re)})
@@ -37,12 +37,12 @@ exports.get_main_page = async(req, res) => {
 exports.get_category_page = async (req, res) => {
   try {
     categoryId = req.params.categoryId
-    console.log(categoryId)
     category   = await Category.find({
       _id: categoryId,
     }).exec();
     console.log(category[0].name)
-    const redisKey = "goods"
+    const redisKey = "category"
+    client.del(redisKey)
     client.get(redisKey, async(err, re) => {
       if (re) {
         res.status(200).send({result : JSON.parse(re)})
@@ -62,7 +62,8 @@ exports.get_category_page = async (req, res) => {
 exports.get_detail_page = async (req, res) => {
   try {
     goodsId = req.params.goodsId;
-    const redisKey = "main"
+    const redisKey = "detail"
+    client.del(redisKey)
     client.get(redisKey, async(err, re) => {
       if (re) {
         res.status(200).send({result : JSON.parse(re)})

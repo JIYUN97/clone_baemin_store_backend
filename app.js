@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./controllers");
 const logger = require("morgan");
+const cors   = require('cors')
 require("dotenv").config();
 
 class App {
@@ -28,6 +29,7 @@ class App {
       .catch((err) => console.log(err));
   }
   setMiddleWare() {
+    this.app.use(cors())
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
   }

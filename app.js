@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./controllers");
 const logger = require("morgan");
-const cors   = require('cors')
+const cors = require("cors");
 require("dotenv").config();
 
 class App {
@@ -16,7 +16,7 @@ class App {
   }
   setDB() {
     mongoose
-      .connect("mongodb://15.164.211.216:27017/admin", {
+      .connect("mongodb://52.79.240.76:27017/admin", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
@@ -29,7 +29,7 @@ class App {
       .catch((err) => console.log(err));
   }
   setMiddleWare() {
-    this.app.use(cors())
+    this.app.use(cors());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
   }

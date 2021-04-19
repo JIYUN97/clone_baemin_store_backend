@@ -5,6 +5,6 @@ const validation = require("../../middlewares/validation");
 
 
 // 주문
-router.post('/', validation, ctrl.order);
+router.post('/', validation, ctrl.order_post);
 
 module.exports = router;

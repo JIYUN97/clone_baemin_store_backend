@@ -39,7 +39,6 @@ exports.get_category_page = async (req, res) => {
     category = await Category.find({
       _id: categoryId,
     }).exec();
-    console.log(category[0].name);
     const redisKey = "category";
     client.del(redisKey);
     client.get(redisKey, async (err, re) => {

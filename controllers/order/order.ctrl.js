@@ -1,47 +1,58 @@
-const { Goods, Order} = require("../../models");
+const { Goods, Order } = require("../../models");
 
 // 주문
-exports.order_post = async(req, res)=>{
-    const { goods, quantity, address_one, address_two,zipcode,delivery_comment,payment_method} = req.body;
-    let { phone_number } = req.body
+exports.order_post = async (req, res) => {
+  const {
+    goods,
+    quantity,
+    address_one,
+    address_two,
+    zipcode,
+    delivery_comment,
+    payment_method,
+  } = req.body;
+  let { phone_number } = req.body;
 
-    order = await Order.findOne({ user : res.locals.user, goods : goods})
-    if (order) {
-        await Order.updateOne({user:res.locals.user, goods }, {$set : {quantity : order.quantity + quantity}})
-        res.status(200).send({ result : "success" })
-        return 
-    }
+  order = await Order.findOne({ user: res.locals.user, goods: goods });
+  if (order) {
+    await Order.updateOne(
+      { user: res.locals.user, goods },
+      { $set: { quantity: order.quantity + quantity } }
+    );
+    res.status(200).send({ result: "success" });
+    return;
+  }
 
-    if(phone_number.includes("-")) {
-        phone_number = phone_number.split('-')
-        phone_number = phone_number.join('')
-    }
+  if (phone_number.includes("-")) {
+    phone_number = phone_number.split("-");
+    phone_number = phone_number.join("");
+  }
 
-    await Order.create({
-        user             : res.locals.user,
-        goods            : goods,
-        quantity         : quantity,
-        address_one      : address_one,
-        address_two      : address_two,
-        zipcode          : zipcode, 
-        delivery_comment : delivery_comment,
-        phone_number     : phone_number,
-        payment_method   : payment_method
-    })
-    res.status(200).send({ result : "success" })
-}
+  await Order.create({
+    user: res.locals.user,
+    goods: goods,
+    quantity: quantity,
+    address_one: address_one,
+    address_two: address_two,
+    zipcode: zipcode,
+    delivery_comment: delivery_comment,
+    phone_number: phone_number,
+    payment_method: payment_method,
+  });
+  res.status(200).send({ result: "success" });
+};
 
-exports.order_get = async(req, res) => {
-    try{
-        console.log(111)
-        orders = await Order.find({})
-        res.status(200).send({
-            result : orders
-        })
-    }catch(err) {
-        console.log(err)
-        res.status(400).send({
-            result : "fail"
-        })
-    }
-}
+exports.order_get = async (req, res) => {
+  try {
+    console.log(111);
+    orders = await Order.find({});
+    res.status(200).send({
+      result: orders,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({
+      result: "fail",
+    });
+  }
+};

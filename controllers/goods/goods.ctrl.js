@@ -1,4 +1,4 @@
-const { Goods, Category, Comment, Order } = require("../../models");
+const { User, Goods, Category, Comment, Order } = require("../../models");
 const fetch = require("node-fetch");
 const redis = require("redis");
 
@@ -111,10 +111,13 @@ exports.postComment = async (req, res) => {
       return res
         .status(401)
         .send({ err: "구매한 상품에 대해서만 후기 작성 가능합니다." });
-
+    const [user, goods] = await Promise.all([
+      User.findById(userId),
+      Goods.findById(goodsId),
+    ]);
     const newComment = new Comment({
-      user: userId,
-      goods: goodsId,
+      user: user,
+      goods: goods,
       title,
       content,
       star_rating,
@@ -136,7 +139,8 @@ exports.getComment = async (req, res) => {
   const { goodsId } = req.params;
   try {
     const comments = await Comment.find({ goods: goodsId })
-      .populate("user", "id")
+      .populate("user", "id name")
+      .select("user title content star_rating")
       .sort("-createdAt");
     return res.send({ result: comments });
   } catch (err) {

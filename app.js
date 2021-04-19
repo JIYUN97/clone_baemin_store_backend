@@ -16,7 +16,7 @@ class App {
   }
   setDB() {
     mongoose
-      .connect("mongodb://15.164.211.216:27017/admin", {
+      .connect("mongodb://52.79.240.76:27017/admin", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,

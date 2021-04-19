@@ -1,4 +1,4 @@
-const { Goods, Order } = require("../../models");
+const { User, Goods, Order } = require("../../models");
 
 // 주문
 exports.order_post = async (req, res) => {
@@ -27,7 +27,6 @@ exports.order_post = async (req, res) => {
     phone_number = phone_number.split("-");
     phone_number = phone_number.join("");
   }
-
   await Order.create({
     user: res.locals.user,
     goods: goods,
@@ -42,17 +41,17 @@ exports.order_post = async (req, res) => {
   res.status(200).send({ result: "success" });
 };
 
-exports.order_get = async (req, res) => {
+//마아페이지 주문내역
+exports.getMyOrder = async (req, res) => {
+  const userId = res.locals.user;
   try {
-    console.log(111);
-    orders = await Order.find({});
-    res.status(200).send({
-      result: orders,
-    });
+    orders = await Order.find({ user: userId })
+      .populate("user", "id name")
+      .populate("goods")
+      .select("user goods quantity");
+    res.status(200).send({ result: orders });
   } catch (err) {
     console.log(err);
-    res.status(400).send({
-      result: "fail",
-    });
+    res.status(400).send({ err: err.message });
   }
 };

@@ -3,9 +3,8 @@ const router = Router();
 const ctrl = require("./order.ctrl");
 const validation = require("../../middlewares/validation");
 
-
 // 주문
-router.post('/', validation, ctrl.order_post);
-router.get('/', validation, ctrl.order_get)
+router.post("/", validation, ctrl.order_post);
+router.get("/", validation, ctrl.getMyOrder);
 
 module.exports = router;

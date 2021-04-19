@@ -1,7 +1,7 @@
 const { Goods, Order} = require("../../models");
 
 // 주문
-exports.order = async(req, res)=>{
+exports.order_post = async(req, res)=>{
     const { goods, quantity, address_one, address_two,zipcode,delivery_comment,payment_method} = req.body;
     let { phone_number } = req.body
 
@@ -29,4 +29,19 @@ exports.order = async(req, res)=>{
         payment_method   : payment_method
     })
     res.status(200).send({ result : "success" })
+}
+
+exports.order_get = async(req, res) => {
+    try{
+        console.log(111)
+        orders = await Order.find({})
+        res.status(200).send({
+            result : orders
+        })
+    }catch(err) {
+        console.log(err)
+        res.status(400).send({
+            result : "fail"
+        })
+    }
 }

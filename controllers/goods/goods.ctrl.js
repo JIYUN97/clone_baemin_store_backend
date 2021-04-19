@@ -111,13 +111,10 @@ exports.postComment = async (req, res) => {
       return res
         .status(401)
         .send({ err: "구매한 상품에 대해서만 후기 작성 가능합니다." });
-    const [user, goods] = await Promise.all([
-      User.findById(userId),
-      Goods.findById(goodsId),
-    ]);
+
     const newComment = new Comment({
-      user: user,
-      goods: goods,
+      user: userId,
+      goods: goodsId,
       title,
       content,
       star_rating,

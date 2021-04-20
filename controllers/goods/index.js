@@ -18,3 +18,5 @@ router.get("/:goodsId", ctrl.get_detail_page);
 //상품후기, 코멘트 작성
 router.post("/:goodsId/comment", validation, ctrl.postComment);
 
+module.exports = router;
+

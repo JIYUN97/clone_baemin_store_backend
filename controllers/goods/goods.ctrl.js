@@ -36,16 +36,13 @@ exports.get_main_page = async (req, res) => {
 exports.get_category_page = async (req, res) => {
   try {
     categoryId = req.params.categoryId;
-    category = await Category.find({
-      _id: categoryId,
-    }).exec();
     const redisKey = "category";
     client.del(redisKey);
     client.get(redisKey, async (err, re) => {
       if (re) {
         res.status(200).send({ result: JSON.parse(re) });
       } else {
-        re = await Goods.find({ category: category[0].name }).exec();
+        re = await Goods.find({ category: categoryId }).exec();
         client.setex(redisKey, 60 * 60, JSON.stringify(re));
         res.status(200).send({ result: re });
       }

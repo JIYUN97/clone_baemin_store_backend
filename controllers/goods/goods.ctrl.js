@@ -1,4 +1,4 @@
-const { Goods, Category, Comment, Order } = require("../../models");
+const { User, Goods, Category, Comment, Order } = require("../../models");
 const fetch = require("node-fetch");
 const redis = require("redis");
 
@@ -132,7 +132,8 @@ exports.getComment = async (req, res) => {
   const { goodsId } = req.params;
   try {
     const comments = await Comment.find({ goods: goodsId })
-      .populate("user", "id")
+      .populate("user", "id name")
+      .select("user title content star_rating createdAt")
       .sort("-createdAt");
     return res.send({ result: comments });
   } catch (err) {

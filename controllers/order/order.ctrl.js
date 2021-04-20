@@ -1,4 +1,4 @@
-const { Goods, Order} = require("../../models");
+const { User, Goods, Order } = require("../../models");
 
 // 주문
 exports.order_post = async(req, res)=>{

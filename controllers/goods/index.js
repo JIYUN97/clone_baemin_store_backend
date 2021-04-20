@@ -7,7 +7,7 @@ const validation = require("../../middlewares/validation");
 router.get("/", ctrl.get_main_page);
 
 // 카테고리 페이지
-router.get("/category/:categoryId", ctrl.get_category_page);
+router.get("/category", ctrl.get_category_page);
 
 // 검색 기능
 router.get("/goods_search", ctrl.search);
@@ -18,5 +18,7 @@ router.get("/:goodsId", ctrl.get_detail_page);
 //상품후기, 코멘트 작성
 router.post("/:goodsId/comment", validation, ctrl.postComment);
 
-module.exports = router;
+//상품후기, 코멘트 불러오기
+router.get("/:goodsId/comment", ctrl.getComment);
 
+module.exports = router;

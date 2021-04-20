@@ -137,7 +137,7 @@ exports.getComment = async (req, res) => {
   try {
     const comments = await Comment.find({ goods: goodsId })
       .populate("user", "id name")
-      .select("user title content star_rating")
+      .select("user title content star_rating createdAt")
       .sort("-createdAt");
     return res.send({ result: comments });
   } catch (err) {

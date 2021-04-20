@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const router = require("./controllers");
 const logger = require("morgan");
 const cors = require("cors");
+const passport = require("passport");
+const passportConfig = require("./passport");
+passportConfig(passport);
+const session = require("express-session");
+
 require("dotenv").config();
 
 class App {
@@ -32,12 +37,35 @@ class App {
     this.app.use(cors());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
+    this.app.use(
+      session({
+        secret: "hello-world",
+        resave: false,
+        saveUninitialized: false,
+        cookie: { secure: false },
+      })
+    );
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
   }
   setRouter() {
     this.app.use(router);
     this.app.get("/", (req, res) => {
       res.send("hello");
     });
+    this.app.get("/auth/kakao", passport.authenticate("kakao"));
+    this.app.get(
+      "/auth/kakao/callback",
+      passport.authenticate("kakao", {
+        failureRedirect: "/",
+      }),
+      (req, res) => {
+        console.log(req.user, 1234);
+        req.session.valid = req.user;
+        console.log(req.session.valid, 3333);
+        res.redirect("/user/kakao");
+      }
+    );
   }
   set404Error() {
     this.app.use((req, res, _) => {

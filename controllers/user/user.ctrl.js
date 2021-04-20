@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const jwt = require("jsonwebtoken");
+const session = require("express-session");
 require("dotenv").config();
 
 /****회원가입****/
@@ -56,4 +57,12 @@ exports.findUserById = async (req, res, next) => {
     console.log(err);
     return res.status(400).send({ err: err.message });
   }
+};
+
+/**카카오 로그인 */
+exports.loginKakao = async (req, res, next) => {
+  const user = req.session.valid;
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_TOKEN);
+  console.log(token);
+  return res.send({ result: { user: { token: token } } });
 };

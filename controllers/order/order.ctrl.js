@@ -21,7 +21,7 @@ exports.order_post = async (req, res) => {
 
     await Order.create({
       user: res.locals.user,
-      goods: goodsId,
+      goods: goods,
       quantity: quantity,
       address_one: address_one,
       address_two: address_two,

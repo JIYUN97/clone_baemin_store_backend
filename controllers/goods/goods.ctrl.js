@@ -35,14 +35,17 @@ exports.get_main_page = async (req, res) => {
 // 카테고리 페이지
 exports.get_category_page = async (req, res) => {
   try {
-    categoryId = req.params.categoryId;
+    category_name = req.query.name;
+    category = await Category.findOne({
+      name: category_name,
+    });
     const redisKey = "category";
     client.del(redisKey);
     client.get(redisKey, async (err, re) => {
       if (re) {
         res.status(200).send({ result: JSON.parse(re) });
       } else {
-        re = await Goods.find({ category: categoryId }).exec();
+        re = await Goods.find({ category: category._id });
         client.setex(redisKey, 60 * 60, JSON.stringify(re));
         res.status(200).send({ result: re });
       }

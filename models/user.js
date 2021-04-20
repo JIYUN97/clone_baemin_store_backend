@@ -11,13 +11,5 @@ const UserSchema = new Schema({
   address_two: { type: String },
 });
 
-UserSchema.virtual("userId").get(() => {
-  return this._id.toHexString;
-});
-
-UserSchema.set("toJSON", {
-  virtuals: true,
-});
-
 const User = model("user", UserSchema);
 module.exports = User;

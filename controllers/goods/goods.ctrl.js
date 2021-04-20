@@ -1,4 +1,4 @@
-const { Goods, Category, Comment, Order } = require("../../models");
+const { User, Goods, Category, Comment, Order } = require("../../models");
 const fetch = require("node-fetch");
 const redis = require("redis");
 
@@ -45,7 +45,7 @@ exports.get_category_page = async (req, res) => {
       if (re) {
         res.status(200).send({ result: JSON.parse(re) });
       } else {
-        re = await Goods.find({ category: category[0].name }).exec();
+        re = await Goods.find({ category: category._id });
         client.setex(redisKey, 60 * 60, JSON.stringify(re));
         res.status(200).send({ result: re });
       }
@@ -135,7 +135,8 @@ exports.getComment = async (req, res) => {
   const { goodsId } = req.params;
   try {
     const comments = await Comment.find({ goods: goodsId })
-      .populate("user", "id")
+      .populate("user", "id name")
+      .select("user title content star_rating createdAt")
       .sort("-createdAt");
     return res.send({ result: comments });
   } catch (err) {

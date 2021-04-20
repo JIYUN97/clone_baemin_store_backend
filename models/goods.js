@@ -1,4 +1,4 @@
-const { Schema, model,Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const GoodsSchema = new Schema({
   title: { type: String },
@@ -7,7 +7,7 @@ const GoodsSchema = new Schema({
   discount_rate: { type: String },
   detail_info: { type: Schema.Types.Mixed },
   thumbnail_url: { type: String },
-  category: { type: Types.ObjectId, required: true, ref: "Category"},
+  category: { type: String },
   detail_image_url: { type: [String] },
   discount: { type: Boolean },
   option: { type: [String] },

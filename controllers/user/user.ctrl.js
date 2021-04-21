@@ -29,7 +29,7 @@ exports.login = async (req, res, next) => {
         .status(401)
         .send({ err: "아이디 또는 패스워드가 일치하지 않습니다." });
     const token = jwt.sign({ userId: user._id }, process.env.JWT_TOKEN);
-    return res.send({ result: { user: { token: token } } });
+    return res.send({ result: { user: { token: token, id: user.id } } });
   } catch (err) {
     console.log(err);
     return res.status(400).send({ err: err.message });

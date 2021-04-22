@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const jwt = require("jsonwebtoken");
+const session = require("express-session");
 require("dotenv").config();
 
 /****회원가입****/

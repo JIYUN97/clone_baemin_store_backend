@@ -43,8 +43,8 @@ exports.getMyOrder = async (req, res) => {
   try {
     orders = await Order.find({ user: userId })
       .populate("user", "id name")
-      .populate("goods", "title sale_price option thumbnail_url createdAt")
-      .select("user goods quantity ")
+      .populate("goods", "title sale_price option thumbnail_url")
+      .select("user goods quantity createdAt")
       .sort("-createdAt");
     res.status(200).send({ result: orders });
   } catch (err) {

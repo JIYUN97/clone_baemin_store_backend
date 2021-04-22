@@ -30,7 +30,7 @@ exports.getGoodsByCategory = async (req, res) => {
 exports.getGoodsDetail = async (req, res) => {
   goodsId = req.params.goodsId;
   try {
-    const goods = await Goods.findOne({ _id: goodsId });
+    const goods = await Goods.findById(goodsId);
     return res.send({ result: goods });
   } catch (err) {
     console.log(err);

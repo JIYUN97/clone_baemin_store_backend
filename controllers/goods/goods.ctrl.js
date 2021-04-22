@@ -91,7 +91,7 @@ exports.search = async (req, res) => {
 };
 
 //코멘트(상품 후기) 생성
-exports.postComment = async (req, res) => {
+exports.createComment = async (req, res) => {
   const { goodsId } = req.params;
   const userId = res.locals.user;
   const { title, content, star_rating } = req.body;
@@ -139,6 +139,25 @@ exports.getComment = async (req, res) => {
       .select("user title content star_rating createdAt")
       .sort("-createdAt");
     return res.send({ result: comments });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ err: err.message });
+  }
+};
+
+//코멘트(상품후기) 삭제하기
+exports.deleteComment = async (req, res) => {
+  //코멘트 id
+  const { id } = req.body;
+  //상품 id
+  const { goodsId } = req.params;
+  try {
+    //댓글 삭제 및 댓글 갯수 수정
+    await Promise.all([
+      Comment.findByIdAndDelete(id),
+      Goods.findByIdAndUpdate(goodsId, { $inc: { comment_count: -1 } }),
+    ]);
+    return res.send({ result: "success" });
   } catch (err) {
     console.log(err);
     return res.status(400).send({ err: err.message });

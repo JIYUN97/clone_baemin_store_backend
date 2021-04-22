@@ -58,11 +58,3 @@ exports.findUserById = async (req, res, next) => {
     return res.status(400).send({ err: err.message });
   }
 };
-
-/**카카오 로그인 */
-exports.loginKakao = async (req, res, next) => {
-  const user = req.session.valid;
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_TOKEN);
-  console.log(token);
-  return res.send({ result: { user: { token: token } } });
-};

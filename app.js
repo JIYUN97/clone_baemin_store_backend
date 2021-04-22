@@ -53,19 +53,6 @@ class App {
     this.app.get("/", (req, res) => {
       res.send("hello");
     });
-    this.app.get("/auth/kakao", passport.authenticate("kakao"));
-    this.app.get(
-      "/auth/kakao/callback",
-      passport.authenticate("kakao", {
-        failureRedirect: "/",
-      }),
-      (req, res) => {
-        console.log(req.user, 1234);
-        req.session.valid = req.user;
-        console.log(req.session.valid, 3333);
-        res.redirect("/user/kakao");
-      }
-    );
   }
   set404Error() {
     this.app.use((req, res, _) => {

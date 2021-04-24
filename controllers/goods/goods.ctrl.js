@@ -1,4 +1,5 @@
 const { Goods, Category, Comment, Order } = require("../../models");
+const { findById } = require("../../models/user");
 
 // 메인 페이지(모든 상품)
 exports.getAllGoods = async (req, res) => {
@@ -112,6 +113,12 @@ exports.deleteComment = async (req, res) => {
   //상품 id
   const { goodsId } = req.params;
   try {
+    //localStorage로 인한 예외처리
+    const goods = await Goods.findById(goodsId);
+    if (goods.comment_count == 0)
+      return res
+        .status(400)
+        .send({ err: "해당 상품의 후기가 존재하지 않습니다." });
     //댓글 삭제 및 댓글 갯수 수정
     await Promise.all([
       Comment.findByIdAndDelete(id),
